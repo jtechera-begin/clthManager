@@ -1,6 +1,8 @@
 import flet
 from flet import *
 from app.gui.colors import Colores
+import subprocess
+import sys
 
 def on_hover(e):
     if e.data == "true":
@@ -12,6 +14,42 @@ def on_hover(e):
         #e.control.content.controls[0].icon_color = Colores.FONDO.value
         #e.control.content.controls[1].color = Colores.FONDO.value
     e.control.update()
+
+def volver_a_login(page : Page):
+    page.window.close()
+    subprocess.Popen([sys.executable, "login.py"])
+
+def boton_salir(icon_name: str, text: str, page : Page):
+    return GestureDetector(
+        mouse_cursor=MouseCursor.CLICK,
+        on_tap=lambda e: volver_a_login(page),
+        content=Container(
+            width=200,
+            height=45,
+            border_radius=10,
+            bgcolor=Colores.ASIDECOLOR.value,
+            on_hover=on_hover,
+            content=Row(
+                controls=[
+                    IconButton(
+                        icon=icon_name,
+                        icon_color=Colores.TEXTO.value,
+                        icon_size=18,
+                        style=ButtonStyle(
+                            shape=RoundedRectangleBorder(radius=5),
+                            overlay_color="Transparent"
+                        ),
+                    ),
+                    Text(
+                        value=text,
+                        color=Colores.TEXTO.value,
+                        size=13
+                    )
+                ]
+            ),
+            opacity=0.9
+        )
+    )
 
 def botones(icon_name: str, text: str, ruta: str, ir_a_ruta):
     return GestureDetector(
@@ -54,14 +92,14 @@ def perfil():
         margin=margin.symmetric(0,50)
     )
 
-def mostrar_nav(ir_a_ruta):
+def mostrar_nav(ir_a_ruta, page : Page):
     return Container(
         bgcolor=Colores.NEGRO.value,
         content=Container(
             width=230,
             height=720,
-            padding=padding.symmetric(vertical=60, horizontal=0),
-            margin=margin.only(30, 30, 0, 30),
+            padding=padding.symmetric(60, 0),
+            margin=margin.only(30, 0, 0, 30),
             border_radius=30,
             bgcolor=Colores.ASIDECOLOR.value,
             alignment=alignment.center,
@@ -80,7 +118,7 @@ def mostrar_nav(ir_a_ruta):
                             botones(Icons.SHOPPING_BAG, "Ventas", "/ventas", ir_a_ruta),
                         ],
                     ),
-                    botones(Icons.EXIT_TO_APP, "Salir", "/salir", ir_a_ruta),
+                    boton_salir(Icons.EXIT_TO_APP, "Volver a Login", page)
                 ]
             )
         )

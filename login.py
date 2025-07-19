@@ -11,14 +11,14 @@ mensaje.opacity = 0
 
 def ingresar(nombre, passwd, page : Page):
     if nombre == "Juan" and passwd == "1234":
-        page.window.destroy()
+        page.window.close()
         subprocess.Popen([sys.executable, "main.py"])
     else:
         mensaje.opacity = 1
         page.update()
 
 def cerrar(page : Page):
-    page.window.destroy() 
+    page.window.close() 
 
 def cambiar_link(e):
     if e.data == "true":

@@ -36,7 +36,7 @@ def on_hover(e):
         )
     e.control.update()
 
-def mostrar_home():
+def mostrar_home(page : Page):
     return Container(
         expand=True,
         bgcolor=Colores.NEGRO.value,
@@ -44,7 +44,7 @@ def mostrar_home():
             expand=True,
             bgcolor=Colores.ASIDECOLOR.value,
             padding=30,
-            margin=30,
+            margin=margin.only(30,0,30,30),
             border_radius=30,
             content=Column(
                 spacing=20,
@@ -77,7 +77,7 @@ def mostrar_home():
                                     shape=RoundedRectangleBorder(radius=20),
                                     padding=20
                                 )
-                            )
+                            ),
                         ]
                     ),
 

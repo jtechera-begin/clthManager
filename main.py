@@ -6,6 +6,7 @@ import app.gui.navbar as nav
 import app.gui.home_view as home
 import app.gui.clientes_view as clients
 import app.gui.ventas_view as ventas
+import app.gui.topbar as topbar
 
 ruta = ["/", "/clientes", "/ventas", "/salir"]
 
@@ -20,14 +21,18 @@ def main(page: Page):
     page.window.resizable = False
     page.padding = 0
     page.update()
+    page.theme_mode = ThemeMode.DARK
+    page.window.title_bar_hidden = True
+
 
     def ir_a_ruta(nueva_ruta: str):
         if nueva_ruta != page.route:
             page.go(nueva_ruta)
 
-    navbar = nav.mostrar_nav(ir_a_ruta)
+    navbar = nav.mostrar_nav(ir_a_ruta, page)
+    tpbar = topbar.mostrar_topbar(page)
 
-    home_view=home.mostrar_home()
+    home_view=home.mostrar_home(page)
     clients_view=clients.mostrar_clientes()
     ventas_view=ventas.mostrar_ventas()
 
@@ -50,12 +55,17 @@ def main(page: Page):
         page.clean()
         page.add(
             Container(
-                bgcolor=Colors.WHITE,
+                bgcolor=Colors.BLACK,
                 expand=True,
-                content=Row(
-                    expand=True,
+                content=Column(
                     spacing=0,
-                    controls=[navbar, mostrar_vista(page.route)]
+                    controls=[
+                        tpbar,
+                        Row(
+                            expand=True,
+                            controls=[navbar,mostrar_vista(page.route)]
+                        )
+                    ]
                 )
             )
         )
