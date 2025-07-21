@@ -7,8 +7,9 @@ import app.gui.home_view as home
 import app.gui.clientes_view as clients
 import app.gui.ventas_view as ventas
 import app.gui.topbar as topbar
+import app.gui.create_client as create_client
 
-ruta = ["/", "/clientes", "/ventas", "/salir"]
+ruta = ["/", "/clientes", "/ventas", "/salir", "/alta_cliente"]
 
 def main(page: Page):
     page.title = "Sistema de gestión"
@@ -45,8 +46,10 @@ def main(page: Page):
                 return clients_view
             case "/ventas":
                 return ventas_view
+            case "/alta_cliente":
+                return create_client.mostrar_create_cliente(page)
             case "/salir":
-                page.window.destroy()
+                page.window.close()
                 return
             case _:
                 return Container(Text("Ruta no encontrada", size=20), expand=True)

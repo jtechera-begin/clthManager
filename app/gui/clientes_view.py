@@ -1,11 +1,15 @@
 import flet
 from flet import *
+import subprocess
+import sys
 
 from app.gui.colors import Colores
+#from app.gui.create_client import mostrar_create_cliente
 
 from app.data.clients_db import cargar_datos
 
 tabla_clientes = Column(expand=True, scroll=ScrollMode.AUTO)
+texto_cantidad_clientes = Text("", size=15, color=Colors.WHITE, weight=FontWeight.W_600)
 
 def on_hover_tarjeta(e):
     if e.data == "true":
@@ -72,7 +76,6 @@ def acciones():
         ]
     )
 
-
 def tarjeta_cliente(cliente: dict):
     return Container(
         padding=padding.symmetric(5,10),
@@ -107,42 +110,60 @@ def tarjeta_cliente(cliente: dict):
         #on_click=lambda e: on_click_tarjeta(e),
         on_hover= lambda e: on_hover_tarjeta(e)
     )
-def mostrar_accion(e):
-    boton = e.control
-    boton.style.bgcolor = Colores.AZUL_PRINCIPAL.value
-    e.page.update()
+
+def actualizar_tabla_slienciosa(page: Page):
+    clientes_nuevo = cargar_datos()
+
+    if clientes_nuevo is None:
+        page.open(SnackBar(
+            Text("Error al actualizar la tabla: Intente mas tarde", color=Colors.WHITE, weight=FontWeight.BOLD, size=20),
+            bgcolor=Colors.RED,
+            duration=2000
+        ))
+    else:
+        texto_cantidad_clientes.value = f"{len(clientes_nuevo)} Clientes encontrados"
+        texto_cantidad_clientes.update()
+
+        tabla_clientes.controls.clear()
+        tabla_clientes.controls.extend([tarjeta_cliente(c) for c in clientes_nuevo])
+        tabla_clientes.update()
+
+def actualizar_tabla(page : Page):
+    clientes_nuevo = cargar_datos()
+
+    if clientes_nuevo is None:
+        page.open(SnackBar(
+            Text("Error al actualizar la tabla: Intente mas tarde", color=Colors.WHITE, weight=FontWeight.BOLD, size=20),
+            bgcolor=Colors.RED,
+            duration=2000
+        ))
+    else:
+        page.open(SnackBar(
+            Text("Tabla actualizada correctamente", color=Colors.WHITE, weight=FontWeight.BOLD, size=20),
+            bgcolor=Colors.GREEN,
+            duration=2000
+        ))
+        texto_cantidad_clientes.value = f"{len(clientes_nuevo)} Clientes encontrados"
+        texto_cantidad_clientes.update()
+
+        tabla_clientes.controls.clear()
+        tabla_clientes.controls.extend([tarjeta_cliente(c) for c in clientes_nuevo])
+        tabla_clientes.update()
+    
 
 def mostrar_clientes(page : Page):
-
     clientes = cargar_datos()
+    tabla_clientes.controls.clear()
     filas_clientes = [tarjeta_cliente(c) for c in clientes]
 
-    tabla_clientes.controls.clear()
-    tabla_clientes.controls.extend(filas_clientes)
-    
-    def actualizar_tabla():
-        clientes_nuevo = cargar_datos()
+    texto_cantidad_clientes.value = f"{len(clientes)} Clientes encontrados"
 
-        if clientes_nuevo is None:
-            page.open(SnackBar(
-                Text("Error al actualizar la tabla: Intente mas tarde", color=Colors.WHITE, weight=FontWeight.BOLD, size=20),
-                bgcolor=Colors.RED,
-                duration=2000
-            ))
-        else:
-            filas_clientes_nuevo = [tarjeta_cliente(c) for c in clientes_nuevo]
-            page.open(SnackBar(
-                Text("Tabla actualizada correctamente", color=Colors.WHITE, weight=FontWeight.BOLD, size=20),
-                bgcolor=Colors.GREEN,
-                duration=2000
-            ))
-            tabla_clientes.controls.clear()
-            tabla_clientes.controls.extend(filas_clientes_nuevo)
-            tabla_clientes.update()            
+    tabla_clientes.controls.extend(filas_clientes)
 
     return Container(
         expand=True,
         bgcolor=Colores.NEGRO.value,
+        height=1000,
         content=Container(
             expand=True,
             bgcolor=Colores.ASIDECOLOR.value,
@@ -160,21 +181,18 @@ def mostrar_clientes(page : Page):
                             Column(
                                 controls=[
                                     Text("Clientes", size=25, color=Colors.WHITE, weight=FontWeight.BOLD),
-                                    Text(f"{len(filas_clientes)} Clientes encontrados", size=12, color=Colors.WHITE, weight=FontWeight.W_600)
+                                    texto_cantidad_clientes
                                 ]
                             ),
-                            Row(
-                                controls=[
-                                    ElevatedButton(
-                                        "Agregar nuevo cliente",
-                                        icon=Icons.ADD,
-                                        style=ButtonStyle(
-                                            bgcolor=Colores.AZUL_PRINCIPAL.value,
-                                            color=Colors.WHITE,
-                                            padding=20
-                                        )
-                                    )
-                                ]
+                            ElevatedButton(
+                                "Agregar nuevo cliente",
+                                icon=Icons.ADD,
+                                style=ButtonStyle(
+                                    bgcolor=Colores.AZUL_PRINCIPAL.value,
+                                    color=Colors.WHITE,
+                                    padding=20
+                                ),
+                                on_click=lambda e: page.go("/alta_cliente")
                             )
                         ]
                     ),
@@ -187,10 +205,10 @@ def mostrar_clientes(page : Page):
                                 controls=[
                                     Row(
                                         spacing=30,
-                                        alignment=MainAxisAlignment.CENTER,
                                         controls=[
                                             Text("Clientes activos", size=18, weight=FontWeight.W_600, color=Colors.WHITE),
                                             TextField(
+                                                width=400,
                                                 hint_text="Busca un cliente por id, nombre, telefono...",
                                                 hint_style=TextStyle(
                                                     color=Colors.GREY
@@ -220,7 +238,7 @@ def mostrar_clientes(page : Page):
                                                     icon_color=Colors.GREY,
                                                     animation_duration=500
                                                 ),
-                                                on_click=lambda e: actualizar_tabla()
+                                                on_click=lambda e: actualizar_tabla(page)
                                             ),
                                             ElevatedButton(
                                                 "Ver inactivos",
