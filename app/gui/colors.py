@@ -12,5 +12,7 @@ class Colores(Enum):
     GRIS_CLARO="#272727"
     FONDO="#f5f8ff"
     HOVER="#3F3F3F"
-
-    
+    DATO_CORRECTO = "#CBEED5"
+    LETRA_DATO_CORRECTO = "#5FB37B"
+    DATO_INCORRECTO = "#FFD9DB"
+    LETRA_DATO_INCORRECTO = "#E48087"

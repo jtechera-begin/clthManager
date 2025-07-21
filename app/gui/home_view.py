@@ -4,8 +4,13 @@ from flet import *
 from app.gui.colors import Colores
 from app.logic.todo import GestorTareas
 
+from app.logic.user import User
+from app.logic.session_storage import cargar_sesion_json
+
 gestor = GestorTareas()
 entrada, lista = gestor.obtener_entrada_y_lista()
+
+usuario = cargar_sesion_json()
 
 def crear_cartas(text, number):
     return Container(
@@ -53,31 +58,35 @@ def mostrar_home(page : Page):
                         alignment=MainAxisAlignment.SPACE_BETWEEN,
                         controls=[
                             TextField(
-                                hint_text="Search something...",
+                                expand=True,
+                                hint_text="Busca algo...",
                                 hint_style=TextStyle(
                                     color=Colors.GREY
                                 ),
                                 border_radius=20,
                                 prefix_icon=Icons.SEARCH,
-                                width=600,
                                 height=45,
                                 filled=True,
                                 color=Colors.WHITE,
                                 fill_color=Colores.ASIDECOLOR.value,
-                                border_color=Colors.TRANSPARENT,
+                                border_color=Colores.GRIS_CLARO.value,
+                                border=InputBorder.UNDERLINE,
                                 focused_border_color=Colores.AZUL_PRINCIPAL.value,
                                 hover_color=Colors.TRANSPARENT,
                             ),
-                            ElevatedButton(
-                                "Add New",
-                                icon=Icons.ADD,
-                                style=ButtonStyle(
-                                    bgcolor=Colores.AZUL_PRINCIPAL.value,
-                                    color=Colors.WHITE,
-                                    shape=RoundedRectangleBorder(radius=20),
-                                    padding=20
-                                )
-                            ),
+                            Row(
+                                controls=[
+                                    ElevatedButton(
+                                        "Mi cuenta",
+                                        icon=Icons.ACCOUNT_CIRCLE_OUTLINED,
+                                        style=ButtonStyle(
+                                            bgcolor=Colores.ASIDECOLOR.value,
+                                            color=Colors.WHITE,
+                                            padding=15
+                                        )
+                                    ),
+                                ]
+                            )
                         ]
                     ),
 
@@ -91,7 +100,7 @@ def mostrar_home(page : Page):
                             spacing=10,
                             horizontal_alignment=CrossAxisAlignment.START,
                             controls=[
-                                Text("Good Morning", size=26, weight=FontWeight.BOLD, color="white"),
+                                Text(f"Bienvenido, {usuario.nombre}", size=26, weight=FontWeight.BOLD, color="white"),
                                 Text("You have 75 new applications. It is a lot of work for today!", size=16, color="white70"),
                                 ElevatedButton(
                                     "Review It",
@@ -172,6 +181,7 @@ def mostrar_home(page : Page):
                                                         entrada,
                                                         IconButton(
                                                             icon=Icons.ADD,
+                                                            icon_color=Colors.WHITE,
                                                             icon_size=20,
                                                             tooltip="Agregar",
                                                             on_hover=lambda e: on_hover(e),

@@ -2,3 +2,5 @@
 [18/07/2025 - 14:13:58] | Error: 1045 (28000): Access denied for user 'oot'@'localhost' (using password: NO) 
 [18/07/2025 - 14:34:50] | Error: 1146 (42S02): Table 'clthmanager.cliente' doesn't exist 
 [18/07/2025 - 14:36:29] | Error: 1146 (42S02): Table 'clthmanager.cliente' doesn't exist 
+[19/07/2025 - 12:31:41] | Error: 1146 (42S02): Table 'clthmanager.clientes' doesn't exist
+[21/07/2025 - 02:47:04] | Error: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061) 

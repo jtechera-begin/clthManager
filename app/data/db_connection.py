@@ -2,7 +2,7 @@
 # Sera llamada desde otros archivos para generar las consultas correspondientes.
 
 import mysql.connector
-from credentials import config
+from app.data.credentials import config
 import datetime
 
 def crear_conexion():
@@ -18,5 +18,3 @@ def crear_conexion():
         file.writelines(f"{fecha_hora} | Error: {err} \n") # se escribe el error en el archivo error-db.txt
         #print("Conexion fallida. Ver error-db.txt")
         return None # no retorna nada
-    
-crear_conexion()

@@ -33,7 +33,7 @@ def main(page: Page):
     tpbar = topbar.mostrar_topbar(page)
 
     home_view=home.mostrar_home(page)
-    clients_view=clients.mostrar_clientes()
+    clients_view=clients.mostrar_clientes(page)
     ventas_view=ventas.mostrar_ventas()
 
     def mostrar_vista(ruta:str):

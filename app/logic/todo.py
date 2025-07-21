@@ -23,7 +23,7 @@ class GestorTareas:
             border_radius=20,
             color=ft.Colors.WHITE,
             border=ft.InputBorder.UNDERLINE,
-            border_color= Colores.GRIS_CLARO.value,
+            border_color= ft.Colors.TRANSPARENT,
             focused_border_color= Colores.AZUL_PRINCIPAL.value
         )
 
@@ -56,6 +56,7 @@ class GestorTareas:
                     ft.IconButton(
                         icon=ft.Icons.CLOSE,
                         tooltip="Eliminar tarea",
+                        icon_color=ft.Colors.WHITE,
                         style=ft.ButtonStyle(
                             bgcolor=ft.Colors.TRANSPARENT,
                             shape=ft.CircleBorder(),

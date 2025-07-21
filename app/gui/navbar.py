@@ -7,12 +7,21 @@ import sys
 def on_hover(e):
     if e.data == "true":
         e.control.bgcolor = Colores.GRIS_CLARO.value
-        #e.control.content.controls[0].icon_color = Colores.AZUL_PRINCIPAL.value
-        #e.control.content.controls[1].color = Colores.AZUL_PRINCIPAL.value
+
     else:
         e.control.bgcolor = Colores.ASIDECOLOR.value
-        #e.control.content.controls[0].icon_color = Colores.FONDO.value
-        #e.control.content.controls[1].color = Colores.FONDO.value
+
+    e.control.update()
+
+def on_hoverr(e):
+    if e.data == "true":
+        e.control.bgcolor = Colores.GRIS_CLARO.value
+        e.control.content.controls[0].icon_color = Colors.RED
+        e.control.content.controls[1].color = Colors.RED
+    else:
+        e.control.bgcolor = Colores.ASIDECOLOR.value
+        e.control.content.controls[0].icon_color = Colors.WHITE
+        e.control.content.controls[1].color = Colors.WHITE
     e.control.update()
 
 def volver_a_login(page : Page):
@@ -28,7 +37,7 @@ def boton_salir(icon_name: str, text: str, page : Page):
             height=45,
             border_radius=10,
             bgcolor=Colores.ASIDECOLOR.value,
-            on_hover=on_hover,
+            on_hover=on_hoverr,
             content=Row(
                 controls=[
                     IconButton(
